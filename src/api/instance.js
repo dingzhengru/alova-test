@@ -28,15 +28,15 @@ const alovaInstance = createAlova({
       if (response.status >= 400) {
         throw new Error(response.statusText);
       }
-      // const json = await response.json();
+      const json = await response.json();
       // if (json.code !== 200) {
       //   // This request will throw an error when an error is thrown or a Promise instance in the reject state is returned
       //   throw new Error(json.message);
       // }
 
       // The parsed response data will be passed to the transformData hook function of the method instance, and these functions will be explained later
-      // return json;
-      return response;
+      return json;
+      // return response;
     },
 
     // Interceptor for request failure
