@@ -1,5 +1,6 @@
 import { defineMock } from '@alova/mock';
 
+//* https://alova.js.org/zh-CN/extension/alova-mock/
 export default defineMock(
   {
     // 捕获get请求
