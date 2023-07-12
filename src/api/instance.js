@@ -53,6 +53,10 @@ const alovaInstance = createAlova({
     HEAD: 60 * 10 * 1000,
   },
 
+  //* 是否於 console 顯示 cache log https://alova.js.org/zh-CN/next-step/cache-log
+  cacheLogger: process.env.NODE_ENV === 'development',
+  // cacheLogger: false,
+
   beforeRequest(method) {
     console.log('beforeRequest method');
     console.log(method);
