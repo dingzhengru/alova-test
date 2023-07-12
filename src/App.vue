@@ -1,28 +1,10 @@
 <template>
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </nav>
   <router-view />
-  {{ data }}
 </template>
-
-<script>
-import { apiEntries, apiGetDataVersionList } from '@/api/test';
-import { onMounted, ref } from 'vue';
-
-export default {
-  setup() {
-    const entries = ref([]);
-    const data = ref([]);
-    onMounted(async () => {
-      entries.value = await apiEntries();
-      data.value = await apiGetDataVersionList();
-    });
-
-    return {
-      entries,
-      data,
-    };
-  },
-};
-</script>
 
 <style lang="scss">
 #app {

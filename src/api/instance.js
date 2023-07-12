@@ -1,12 +1,58 @@
 import { createAlova } from 'alova';
 import GlobalFetch from 'alova/GlobalFetch';
 import VueHook from 'alova/vue';
+import { createAlovaMockAdapter } from '@alova/mock';
+import mockGroup1 from './mock';
+
+//* mock
+const mockAdapter = createAlovaMockAdapter([mockGroup1 /** ... */], {
+  // 全局控制是否启用mock接口，默认为true
+  enable: true,
+
+  // 非模拟请求适配器，用于未匹配mock接口时发送请求
+  httpAdapter: GlobalFetch(),
+
+  // mock接口响应延迟，单位毫秒
+  delay: 1000,
+
+  // 是否打印mock接口请求信息
+  mockRequestLogger: true,
+
+  // 模拟接口回调，data为返回的模拟数据，你可以用它构造任何你想要的对象返回给alova
+  // 以下为默认的回调函数，它适用于使用GlobalFetch请求适配器
+  // 如果你使用的是其他请求适配器，在模拟接口回调中请自定义返回适合适配器的数据结构
+  // onMockResponse: data => {
+  //   console.log('onMockResponse');
+  //   console.log(data);
+  //   return new Response(JSON.stringify(data));
+  // },
+});
 
 const alovaInstance = createAlova({
   // baseURL: 'https://api.publicapis.org',
   // baseURL: 'https://pwaapi.bacctest.com',
   statesHook: VueHook,
-  requestAdapter: GlobalFetch(),
+
+  // requestAdapter: GlobalFetch(),
+  // 使用mock请求适配器，如果需要切换适配器，请看下面的实践建议
+  requestAdapter: mockAdapter,
+
+  //* 緩存模式 https://alova.js.org/zh-CN/learning/response-cache
+  // localCache: null,
+  localCache: {
+    // 统一设置GET的缓存模式
+    GET: {
+      // 设置缓存模式为内存模式
+      mode: 'memory',
+
+      // 单位为毫秒
+      // 当设置为`Infinity`，表示数据永不过期，设置为0或负数时表示不缓存
+      expire: 60 * 10 * 1000,
+    },
+    // 统一设置HEAD请求的缓存模式
+    HEAD: 60 * 10 * 1000,
+  },
+
   beforeRequest(method) {
     console.log('beforeRequest method');
     console.log(method);
